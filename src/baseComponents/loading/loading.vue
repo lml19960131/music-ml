@@ -19,14 +19,12 @@
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import '../../../src/common/stylus/variable.styl';
 
-  .loading{
-    width: 100%;
-    text-align: center;
-  }
+  .loading
+    width 100%
+    text-align center
+    .desc
+     line-height: 20px
+     font-size $font-size-small
+      color $color-text-l
 
-  .desc{
-    line-height: 20px;
-    font-size: $font-size-small;
-    color: $color-text-l;
-  }
 </style>
