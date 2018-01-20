@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper">
+  <div class="wrapper">
     <slot></slot>
   </div>
 </template>
@@ -8,12 +8,12 @@
   import BScroll from 'better-scroll'
 
   export default{
-    props:{
-      probeType:{
+    prop: {
+      probeType: {
         type: Number,
         default: 1
       },
-      click:{
+      click: {
         type: Boolean,
         default: true
       },
@@ -22,13 +22,13 @@
         default: null
       }
     },
-    mouted(){
-      setTimeout( () => {
+    mounted(){
+      setTimeout(() => {
         this._initScroll()
       }, 20)
     },
     methods:{
-      _initScroll(){
+      _initScroll() {
         if(!this.$refs.wrapper){
           return
         }
@@ -37,19 +37,19 @@
           click: this.click
         })
       },
-      entable(){
-        this.scroll&&this.scroll.entable()
+      enable() {
+        this.scroll && this.scroll.enable()
       },
-      disable(){
-        this.scroll&&this.scroll.disable()
+      disable() {
+        this.scroll && this.scroll.disable()
       },
-      refresh(){
-        this.scroll&&this.scroll.refresh()
+      refresh() {
+        this.scroll && this.scroll.refresh()
       }
     },
-    watch:{
+    watch: {
       data(){
-        setTimeout(() =>{
+        setTimeout(() => {
           this.refresh()
         }, 20)
       }
