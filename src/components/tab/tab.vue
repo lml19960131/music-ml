@@ -1,6 +1,6 @@
 <template>
   <div class="tab">
-    //在router中使用tag可以修改渲染时的样式，默认是a标签
+    <!--在router中使用tag可以修改渲染时的样式，默认是a标签-->
     <router-link tag="div" class="tab-item" to="/recommend">
       <span class="tab-link">推荐</span>
     </router-link>
