@@ -1,83 +1,89 @@
 <template>
   <div class="singer">
-    <ul v-for="item in singers">
-      <li>
-        <img :src="item.picture"  width="60" height="60" class="singer-picture">
-        <span class="singer-name">{{item.name}}</span>
-      </li>
-    </ul>
+    <list-view :data="singers"></list-view>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {getSingerList} from '../../api/singer'
+  import {ERR_OK} from '../../api/config'
+  import Singer from '../../common/js/singer'
+  import ListView from '../../baseComponents/listView/listView.vue'
+
+  const HOT_NAME = '热门';
+  const HOT_SINGER_LEN = 10;
+
   export default{
     data(){
       return{
-        singers:[
-          {
-            name: 0,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 1,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 2,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 3,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 4,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 5,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 6,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 7,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 8,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 8,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 8,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {
-            name: 8,
-            picture: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
+        singers: []
+      }
+    },
+    components:{
+      ListView
+    },
+    created(){
+      this._getSingerList()
+    },
+    methods:{
+       _getSingerList() {
+         getSingerList().then((res) => {
+           if(res.code === ERR_OK){
+             this.singers = this._nomalizeSinger(res.data.list);
+           }
+         })
+       },
+      _nomalizeSinger(list) {
+        let map = {
+          hot: {
+            title: HOT_NAME,
+            items: []
           }
-        ]
+        };
+        list.forEach((item, index) => {
+          if(index < HOT_SINGER_LEN){
+            map.hot.items.push(new Singer({
+              id: item.Fsinger_mid,
+              name: item.Fsinger_name,
+            }))
+          }
+          const key = item.Findex;
+          if(!map[key]){
+            map[key] = {
+              title: key,
+              items: []
+            }
+          }
+          map[key].items.push(new Singer({
+            id: item.Fsinger_mid,
+            name: item.Fsinger_name,
+          }))
+        });
+        let hot = [];
+        let ret = [];
+        for(let key in map){
+          let val = map[key];
+          if(val.title.match(/[a-zA-Z]/)){
+            ret.push(val);
+          }
+          else if(val.title === HOT_NAME){
+            hot.push(val);
+          }
+        }
+        ret.sort((a, b) =>{
+          return a.title.charCodeAt(0) - b.title.charCodeAt(0);
+        });
+        return hot.concat(ret);
       }
     }
   }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  .singer{
-    position: fixed;
-    top: 88px;
-    bottom: 0;
-    width: 100%;
-    overflow-y: auto;
-  }
-
-  .singer-picture{
-    border-radius: 50%;
-  }
+  .singer
+    position fixed
+    top 88px
+    bottom 0
+    width 100%
+    overflow-y auto
 </style>
