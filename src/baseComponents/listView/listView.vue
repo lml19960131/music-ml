@@ -4,7 +4,7 @@
       <li v-for="group in data" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="item in group.items" class="list-group-item">
+          <li v-for="item in group.items" class="list-group-item" @click="selectItem(item)">
             <img v-lazy="item.avatar" class="avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -47,6 +47,9 @@
         let anchorInedx =getData(e.target, 'index');
         this.$refs.listview.scrollToElement(this.$refs.ListGroup[anchorInedx], 0);
       },
+      selectItem(item) {
+        this.$emit('select', item);
+      }
     }
   }
 </script>
