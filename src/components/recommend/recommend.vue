@@ -37,6 +37,8 @@
   import Slider from '../../baseComponents/slider/slider.vue'
   import scroll from '../../baseComponents/scroll/scroll.vue'
   import loading from '../../baseComponents/loading/loading.vue'
+  import {getRecommend} from '../../api/recommend'
+  import {ERR_OK} from '../../api/config'
 
   export default{
     components:{
@@ -46,24 +48,7 @@
     },
     data(){
       return{
-            //mock数据,可以使用跨站请求伪造
-        recommends:[
-          {
-            linkUrl: 'http://www.luoo.net/site/go/698?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS85MjI',
-            picUrl: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg'
-          },
-          {linkUrl: 'http://www.luoo.net/site/go/624?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS84NjQ',
-            picUrl: 'http://img-cdn2.luoo.net/site/201708/5993be0007772.jpg'
-          },
-          {
-            linkUrl: 'http://www.luoo.net/site/go/643?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS84ODU',
-            picUrl: 'http://img-cdn2.luoo.net/site/201709/59b25ac16f984.jpg'
-          },
-          {
-            linkUrl: 'http://www.luoo.net/site/go/688?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS85MTM',
-            picUrl: 'http://img-cdn2.luoo.net/site/201711/59fc7102afee3.jpg'
-          }
-        ],
+        recommends: [],
         recommendList: [
           {
             linkUrl: 'http://www.luoo.net/site/go/698?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS85MjI',
@@ -116,8 +101,17 @@
           ]
         }
     },
-    created() {},
+    created() {
+      this._getRecommend()
+    },
     methods:{
+      _getRecommend() {
+        getRecommend().then((res) => {
+          if(res.code === ERR_OK){
+            this.recommends = res.data.slider
+          }
+        })
+      },
       loadImage() {
         if (!this.checkloaded) {
           this.checkloaded = true;
