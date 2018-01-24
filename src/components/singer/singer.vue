@@ -1,5 +1,5 @@
 <template>
-  <div class="singer">
+  <div class="singer" ref="singer">
     <list-view :data="singers" @select="selectSinger"></list-view>
     <router-view></router-view>
   </div>
@@ -31,11 +31,11 @@
        _getSingerList() {
          getSingerList().then((res) => {
            if(res.code === ERR_OK){
-             this.singers = this._nomalizeSinger(res.data.list);
+             this.singers = this._normalizeSinger(res.data.list);
            }
          })
        },
-      _nomalizeSinger(list) {
+      _normalizeSinger(list) {
         let map = {
           hot: {
             title: HOT_NAME,
