@@ -1,6 +1,6 @@
 <template>
   <transition name="slider">
-    <div class="singer-detail"></div>
+    <music-list :songs="songs" :title="title" :bg-image="bgImage"></music-list>
   </transition>
 </template>
 
@@ -9,17 +9,27 @@
   import {getSingerDetail} from '../../../src/api/singer'
   import {ERR_OK} from '../../../src/api/config'
   import {createSong} from '../../../src/common/js/song'
+  import musicList from '../music-list/music-list.vue'
 
   export default {
     data(){
       return{
-        song: []
+        songs: []
       }
+    },
+    components:{
+      musicList
     },
     computed: {
       ...mapGetters([
         'singer'
-      ])
+      ]),
+      title(){
+        return this.singer.name;
+      },
+      bgImage() {
+        return this.singer.avatar;
+      }
     },
     created() {
       this._getDetail();
@@ -32,12 +42,11 @@
         }
         getSingerDetail(this.singer.id).then((res) => {
           if(res.code === ERR_OK){
-            this.songs = this._nomalizeSongs(res.data.list);
-            console.log(this.songs)
+            this.songs = this._normalizeSongs(res.data.list);
           }
         })
       },
-      _nomalizeSongs(list){
+      _normalizeSongs(list){
         let ret = [];
         list.forEach((item) => {
           let {musicData} = item;
@@ -53,15 +62,6 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import '../../common/stylus/variable.styl'
-
-  .singer-detail
-    position fixed
-    z-index 100
-    top 0
-    right 0
-    bottom 0
-    left 0
-    background $color-background
 
   .slider-enter-active,.slider-leave-active
     transition all 0.3s
