@@ -15,7 +15,7 @@
     </div>
     <scroll :data="songs" class="list" ref="list">
       <div class="song-list-wrapper">
-        <song-list :songs="songs"></song-list>
+        <song-list :songs="songs" @select="selectItem"></song-list>
       </div>
     </scroll>
   </div>
@@ -24,6 +24,7 @@
 <script type="text/ecmascript-6">
   import Scroll from "../../baseComponents/scroll/scroll.vue"
   import songList from "../../baseComponents/song-list/song-list.vue"
+  import {mapActions} from 'vuex'
 
   export default {
     components:{
@@ -60,6 +61,15 @@
     methods: {
       back() {
         this.$router.back();
+      },
+      ...mapActions([
+        'selectPlay'
+      ]),
+      selectItem(item, index) {
+        this.selectPlay({
+          list: 'this.songs',
+          index
+        })
       }
     }
   }
