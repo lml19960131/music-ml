@@ -5,14 +5,14 @@ import {ERR_OK} from '../../../src/api/config'
 //对象改设计成类
 export default class Song {
   constructor({id, mid, singer, name, album, duration, image, url}) {
-    this.id = id;
-    this.mid = mid;
-    this.singer = singer;
-    this.name = name;
-    this.album = album;
-    this.duration = duration;
-    this.image = image;
-    this.url = url;
+    this.id = id
+    this.mid = mid
+    this.singer = singer
+    this.name = name
+    this.album = album
+    this.duration = duration
+    this.image = image
+    this.url = url
   }
 
   getLyric() {
