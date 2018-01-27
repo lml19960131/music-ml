@@ -35,14 +35,14 @@ export default class Song {
 
 export function createSong(musicData) {
   return new Song({
-    id: musicData.songid,
+    id: musicData.songid, //url有时用id的数据有时用mid的数据
     mid: musicData.songmid,
     singer: filterSinger(musicData.singer),
     name: musicData.songname,
     album: musicData.albumname,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-    url: `http://ws.stream.qqmusic.qq.com/${musicData.songid}.m4a?fromtag=46`
+    url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=5301976172&vkey=A261DEDC2DDB830EACDA055835E50B4A7986B360420EF615ADDA3F01AC22957A4E8BE2CAE9A706D6BC1692D367B5F465835A07705750DDAB&uin=0&fromtag=999`
   })
 }
 
