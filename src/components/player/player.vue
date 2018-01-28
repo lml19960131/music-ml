@@ -26,18 +26,23 @@
           </div>
         </div>
         <div class="bottom">
+          <div class="progress-wrapper">
+            <span class="time time-l">{{format(currentTime)}}</span>
+            <div class="progress-bar-wrapper"></div>
+            <div class="time time-r">{{format(currentSong.duration)}}</div>
+          </div>
           <div class="operators">
             <div class="icon i-left">
               <i class="icon-sequence"></i>
             </div>
-            <div class="icon i-left">
-              <i class="icon-prev"></i>
+            <div class="icon i-left" :class="disableCls">
+              <i class="icon-prev" @click="prev"></i>
             </div>
-            <div class="icon i-center">
+            <div class="icon i-center" :class="disableCls">
               <i :class="playIcon" @click="togglePlaying"></i>
             </div>
-            <div class="icon i-right">
-              <i class="icon-next"></i>
+            <div class="icon i-right" :class="disableCls">
+              <i class="icon-next" @click="next"></i>
             </div>
             <div class="icon i-right">
               <i class="icon icon-not-favorite"></i>
@@ -63,7 +68,9 @@
         </div>
       </div>
     </transition>
-    <audio :src="currentSong.url" ref="audio"></audio>
+    <audio :src="currentSong.url" ref="audio"
+           @canplay="ready" @onerror="error" @timeupdate="updateTime"></audio>
+    <!--audio提供的事件属性参见http://www.runoob.com/tags/ref-eventattributes.html-->
   </div>
 </template>
 
@@ -75,12 +82,19 @@
   const transform = prefixStyle('transform');
 
   export default{
+    data() {
+      return {
+        songReady: false,
+        currentTime: 0
+      }
+    },
     computed: {
       ...mapGetters([
         'fullScreen',
         'playlist',
         'currentSong',
-        'playing'
+        'playing',
+        'currentIndex'
       ]),
       playIcon() {
         return this.playing ? 'icon-pause' : 'icon-play';
@@ -90,12 +104,16 @@
       },
       cdCls() {
         return this.playing ? 'play' : 'play pause'
+      },
+      disableCls() {
+        return this.songReady ? '' : 'disable';
       }
     },
     methods: {
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
-        setPlayingState: 'SET_PLAYING_STATE'
+        setPlayingState: 'SET_PLAYING_STATE',
+        setCurrentIndex: 'SET_CURRENT_INDEX'
       }),
       back() {
         this.setFullScreen(false);
@@ -155,8 +173,52 @@
           scale
         }
       },
+      prev() {
+        if(!this.songReady){
+          return
+        }
+        let index = this.currentIndex - 1;
+        if(index === -1) {
+          index = this.playlist.length - 1;
+        }
+        this.setCurrentIndex(index);
+        if(!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false;
+      },
       togglePlaying() {
         this.setPlayingState(!this.playing);
+      },
+      next() {
+        if(!this.songReady){
+          return
+        }
+        let index = this.currentIndex + 1;
+        if(index === this.playlist.length){
+          index = 0;
+        }
+        this.setCurrentIndex(index);
+        if(!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false;
+      },
+      ready() {
+        this.songReady = true;
+      },
+      error() {
+        this.songReady = true;
+      },
+      updateTime(e) {
+        this.currentTime = e.target.currentTime;
+      },
+      format(interval) {
+        interval = Math.floor(interval);
+        const minute = Math.floor(interval / 60);
+        const secondNum = interval % 60;
+        const second = secondNum.toString().padStart(2, '0');
+        return `${minute}:${second}`;
       }
     },
     watch: {
