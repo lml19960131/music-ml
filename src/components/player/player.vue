@@ -28,7 +28,9 @@
         <div class="bottom">
           <div class="progress-wrapper">
             <span class="time time-l">{{format(currentTime)}}</span>
-            <div class="progress-bar-wrapper"></div>
+            <div class="progress-bar-wrapper">
+              <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
+            </div>
             <div class="time time-r">{{format(currentSong.duration)}}</div>
           </div>
           <div class="operators">
@@ -61,7 +63,9 @@
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control">
-          <i :class="miniPlayIcon" @click.stop="togglePlaying"></i>
+          <progress-circle :percent="percent">
+            <i :class="miniPlayIcon" @click.stop="togglePlaying" class="icon-mini"></i>
+          </progress-circle>
         </div>
         <div class="control">
           <i class="icon-playlist"></i>
@@ -78,6 +82,11 @@
   import {mapGetters, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from '../../common/js/dom'
+  import ProgressBar from '../../baseComponents/progress-bar/progress-bar.vue'
+  import ProgressCircle from  '../../baseComponents/progress-circle/progress-circle.vue'
+
+
+
 
   const transform = prefixStyle('transform');
 
@@ -87,6 +96,10 @@
         songReady: false,
         currentTime: 0
       }
+    },
+    components: {
+      ProgressBar,
+      ProgressCircle
     },
     computed: {
       ...mapGetters([
@@ -107,6 +120,9 @@
       },
       disableCls() {
         return this.songReady ? '' : 'disable';
+      },
+      percent() {
+        return this.currentTime / this.currentSong.duration;
       }
     },
     methods: {
@@ -219,6 +235,12 @@
         const secondNum = interval % 60;
         const second = secondNum.toString().padStart(2, '0');
         return `${minute}:${second}`;
+      },
+      onProgressBarChange(percent) {
+        this.$refs.audio.currentTime = this.currentSong.duration * percent;
+        if(!this.playing){
+          this.togglePlaying();
+        }
       }
     },
     watch: {
@@ -328,6 +350,24 @@
         position: absolute
         bottom: 50px
         width: 100%
+        .progress-wrapper
+          display: flex
+          align-items: center
+          width: 80%
+          margin: 0px auto
+          padding: 10px 0
+          .time
+            color: $color-text
+            font-size: $font-size-small
+            flex: 0 0 30px
+            line-height: 30px
+            width: 30px
+            &.time-l
+              text-align: left
+            &.time-r
+              text-align: right
+          .progress-bar-wrapper
+            flex: 1
         .operators
           display: flex
           align-items: center
