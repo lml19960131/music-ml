@@ -34,8 +34,8 @@
             <div class="time time-r">{{format(currentSong.duration)}}</div>
           </div>
           <div class="operators">
-            <div class="icon i-left">
-              <i class="icon-sequence"></i>
+            <div class="icon i-left" @click="changeMode">
+              <i :class="iconMode"></i>
             </div>
             <div class="icon i-left" :class="disableCls">
               <i class="icon-prev" @click="prev"></i>
@@ -73,7 +73,7 @@
       </div>
     </transition>
     <audio :src="currentSong.url" ref="audio"
-           @canplay="ready" @onerror="error" @timeupdate="updateTime"></audio>
+           @canplay="ready" @onerror="error" @timeupdate="updateTime" @ended="end"></audio>
     <!--audio提供的事件属性参见http://www.runoob.com/tags/ref-eventattributes.html-->
   </div>
 </template>
@@ -84,9 +84,8 @@
   import {prefixStyle} from '../../common/js/dom'
   import ProgressBar from '../../baseComponents/progress-bar/progress-bar.vue'
   import ProgressCircle from  '../../baseComponents/progress-circle/progress-circle.vue'
-
-
-
+  import {playMode} from '../../common/js/config'
+  import {shuffle} from '../../common/js/util'
 
   const transform = prefixStyle('transform');
 
@@ -107,7 +106,9 @@
         'playlist',
         'currentSong',
         'playing',
-        'currentIndex'
+        'currentIndex',
+        "mode",
+        "sequenceList"
       ]),
       playIcon() {
         return this.playing ? 'icon-pause' : 'icon-play';
@@ -123,13 +124,19 @@
       },
       percent() {
         return this.currentTime / this.currentSong.duration;
+      },
+      iconMode() {
+        return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' :
+          'icon-random';
       }
     },
     methods: {
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
         setPlayingState: 'SET_PLAYING_STATE',
-        setCurrentIndex: 'SET_CURRENT_INDEX'
+        setCurrentIndex: 'SET_CURRENT_INDEX',
+        setPlayMode: 'SET_PLAY_MODE',
+        setPlaylist: 'SET_PLAYLIST'
       }),
       back() {
         this.setFullScreen(false);
@@ -206,6 +213,17 @@
       togglePlaying() {
         this.setPlayingState(!this.playing);
       },
+      end() {
+        if(this.mode === playMode.loop){
+          this.loop();
+        } else{
+          this.next()
+        }
+      },
+      loop() {
+        this.$refs.audio.currentTime = 0;
+        this.$refs.audio.play();
+      },
       next() {
         if(!this.songReady){
           return
@@ -241,10 +259,31 @@
         if(!this.playing){
           this.togglePlaying();
         }
-      }
+      },
+      changeMode() {
+        const mode = (this.mode + 1) % 3;
+        this.setPlayMode(mode);
+        let list = null;
+        if(mode === playMode.random) {
+          list = shuffle(this.sequenceList);
+        } else {
+          list = this.sequenceList;
+        }
+        this.resetCurrentIndex(list);
+        this.setPlaylist(list);
+      },
+      resetCurrentIndex(list) {
+        let index = list.findIndex((item) => {
+          return item.id === this.currentSong.id;
+        });
+        this.setCurrentIndex(index);
+      },
     },
     watch: {
-      currentSong() {
+      currentSong(newSong, oldSong) {
+        if(newSong === oldSong){
+          return
+        }
         this.$nextTick(() => {
           this.$refs.audio.play();
         });
@@ -354,7 +393,7 @@
           display: flex
           align-items: center
           width: 80%
-          margin: 0px auto
+          margin: 0 auto
           padding: 10px 0
           .time
             color: $color-text

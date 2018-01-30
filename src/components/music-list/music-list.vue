@@ -25,10 +25,11 @@
   import Scroll from "../../baseComponents/scroll/scroll.vue"
   import songList from "../../baseComponents/song-list/song-list.vue"
   import {mapActions} from 'vuex'
-
+  import {playlistMixin} from '../../common/js/mixin'
 
 
   export default {
+    mixins: [playlistMixin], //混入
     components:{
       Scroll,
       songList
@@ -78,6 +79,11 @@
         this.randomPlay({
           list: this.songs,
         })
+      },
+      handlePlaylist(playlist) {
+        const bottom = playlist.length > 0 ? '60px' : '';
+        this.$refs.list.$el.style.bottom = bottom;
+        this.$refs.list.refresh();
       }
     }
   }
