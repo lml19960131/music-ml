@@ -6,7 +6,7 @@
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="play-wrapper">
-        <div class="play" v-show="songs.length>0">
+        <div class="play" v-show="songs.length>0" ref="playBtn" @click="random">
           <i class="icon-play"></i>
           <span class="text">随机播放列表</span>
         </div>
@@ -25,6 +25,8 @@
   import Scroll from "../../baseComponents/scroll/scroll.vue"
   import songList from "../../baseComponents/song-list/song-list.vue"
   import {mapActions} from 'vuex'
+
+
 
   export default {
     components:{
@@ -63,12 +65,18 @@
         this.$router.back();
       },
       ...mapActions([
-        'selectPlay'
+        'selectPlay',
+        'randomPlay'
       ]),
       selectItem(item, index) {
         this.selectPlay({
           list: this.songs,
           index
+        })
+      },
+      random() {
+        this.randomPlay({
+          list: this.songs,
         })
       }
     }
