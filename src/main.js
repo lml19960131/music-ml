@@ -20,4 +20,4 @@ new Vue({
   router
 });
 
-router.push('/recommend'); //设置默认的根路由，也可以在router组件中设置redirect属性
+
