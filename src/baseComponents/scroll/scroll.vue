@@ -24,6 +24,10 @@
       pullup: {
         type: Boolean,
         default: false
+      },
+      beforeScroll: {
+        type: Boolean,
+        default: false
       }
     },
     mounted(){
@@ -47,6 +51,11 @@
             }
           })
         }
+        if(this.beforeScroll){
+          this.scroll.on('beforeScrollStart', ()=>{
+            this.$emit('beforeScroll')
+          })
+        }
       },
       enable() {
         this.scroll && this.scroll.enable()
@@ -62,7 +71,7 @@
       },
       scrollToElement() {
         this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments);
-      }
+      },
     },
     watch: {
       data(){
