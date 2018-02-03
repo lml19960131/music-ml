@@ -1,6 +1,7 @@
 //1.首先定义和项目相关的数据
 
 import {playMode} from '../common/js/config'
+import {loadSearch} from '../common/js/cache'
 
 const state = {
   singer: {},
@@ -10,7 +11,8 @@ const state = {
   sequenceList: [],
   mode: playMode.sequence,
   currentIndex: -1,
-  topList: {}
+  topList: {},
+  searchHistory: loadSearch()
 };
 
 export default state;
