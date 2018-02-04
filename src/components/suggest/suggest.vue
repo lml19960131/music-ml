@@ -137,7 +137,6 @@
           const singer = new Singer({
             id: item.singermid,
             name: item.singename,
-
           });
           this.$router.push({
             path: `search/${singer.id}`
@@ -146,6 +145,7 @@
         } else {
           this.insertSong(item)
         }
+        this.$emit('select');
       },
       listScroll() {
         this.$emit('listScroll')
