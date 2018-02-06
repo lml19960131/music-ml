@@ -67,11 +67,12 @@
             <i :class="miniPlayIcon" @click.stop="togglePlaying" class="icon-mini"></i>
           </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlaylist">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <playlist ref="playlist"></playlist>
     <audio :src="currentSong.url" ref="audio"
            @canplay="ready" @onerror="error" @timeupdate="updateTime" @ended="end"></audio>
     <!--audio提供的事件属性参见http://www.runoob.com/tags/ref-eventattributes.html-->
@@ -86,6 +87,7 @@
   import ProgressCircle from  '../../baseComponents/progress-circle/progress-circle.vue'
   import {playMode} from '../../common/js/config'
   import {shuffle} from '../../common/js/util'
+  import Playlist from '../../components/playlist/playlist.vue'
 
   const transform = prefixStyle('transform');
 
@@ -98,7 +100,8 @@
     },
     components: {
       ProgressBar,
-      ProgressCircle
+      ProgressCircle,
+      Playlist
     },
     computed: {
       ...mapGetters([
@@ -278,6 +281,9 @@
         });
         this.setCurrentIndex(index);
       },
+      showPlaylist() {
+        this.$refs.playlist.show();
+      }
     },
     watch: {
       currentSong(newSong, oldSong) {
