@@ -85,13 +85,15 @@
   import {prefixStyle} from '../../common/js/dom'
   import ProgressBar from '../../baseComponents/progress-bar/progress-bar.vue'
   import ProgressCircle from  '../../baseComponents/progress-circle/progress-circle.vue'
-  import {playMode} from '../../common/js/config'
   import {shuffle} from '../../common/js/util'
   import Playlist from '../../components/playlist/playlist.vue'
+  import {playerMixin} from '../../common/js/mixin'
+  import {playMode} from '../../common/js/config'
 
   const transform = prefixStyle('transform');
 
   export default{
+    mixins: [playerMixin],
     data() {
       return {
         songReady: false,
@@ -128,10 +130,6 @@
       percent() {
         return this.currentTime / this.currentSong.duration;
       },
-      iconMode() {
-        return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' :
-          'icon-random';
-      }
     },
     methods: {
       ...mapMutations({
@@ -262,24 +260,6 @@
         if(!this.playing){
           this.togglePlaying();
         }
-      },
-      changeMode() {
-        const mode = (this.mode + 1) % 3;
-        this.setPlayMode(mode);
-        let list = null;
-        if(mode === playMode.random) {
-          list = shuffle(this.sequenceList);
-        } else {
-          list = this.sequenceList;
-        }
-        this.resetCurrentIndex(list);
-        this.setPlaylist(list);
-      },
-      resetCurrentIndex(list) {
-        let index = list.findIndex((item) => {
-          return item.id === this.currentSong.id;
-        });
-        this.setCurrentIndex(index);
       },
       showPlaylist() {
         this.$refs.playlist.show();
