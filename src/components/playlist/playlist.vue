@@ -4,8 +4,8 @@
       <div class="list-wrapper" @click.stop>
         <div class="list-header">
           <h1 class="title">
-            <i class="icon"></i>
-            <span class="text"></span>
+            <i class="icon" :class="iconMode" @click="changeMode"></i>
+            <span class="text">{{modeText}}</span>
             <span class="clear" @click="showConfirm">
               <i class="icon-clear"></i>
             </span>
@@ -47,8 +47,10 @@
   import {playMode} from '../../common/js/config'
   import Scroll from '../../baseComponents/scroll/scroll.vue'
   import Confirm from '../../baseComponents/confirm/confirm.vue'
+  import {playerMixin} from '../../common/js/mixin'
 
   export default{
+    mixins: [playerMixin],
     data() {
       return {
         showFlag: false
@@ -112,6 +114,17 @@
         'deleteSongList'
       ])
     },
+    computed:{
+      modeText() {
+        return this.mode === playMode.sequence ? '列表循环' : this.mode === playMode.random ? '随机播放' : '单曲循环'
+      },
+      ...mapGetters([
+        'sequenceList',
+        'currentSong',
+        'playlist',
+        'mode'
+      ])
+    },
     watch:{
       currentSong(newSong, oldSong) {
         if(!this.showFlag || newSong.id === oldSong.id) {
@@ -119,14 +132,6 @@
         }
         this.scrollToCurrentSong(newSong)
       }
-    },
-    computed:{
-      ...mapGetters([
-        'sequenceList',
-        'currentSong',
-        'playlist',
-        'mode'
-    ])
     }
   }
 </script>
@@ -171,7 +176,7 @@
           .text
             flex 1
             font-size $font-size-medium
-            color $color-text-l
+            color $color-text
           .clear
             extend-click()
             .icon-clear
