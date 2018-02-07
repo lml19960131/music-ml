@@ -39,18 +39,17 @@
   import {getHotKey} from '../../api/search'
   import {ERR_OK} from '../../api/config'
   import Suggest from '../../components/suggest/suggest.vue'
-  import {mapActions, mapGetters} from 'vuex'
+  import {mapActions} from 'vuex'
   import SearchList from '../../baseComponents/search-list/search-list.vue'
   import Confirm from '../../baseComponents/confirm/confirm.vue'
   import Scroll from '../../baseComponents/scroll/scroll.vue'
-  import {playlistMixin} from '../../common/js/mixin'
+  import {playlistMixin, searchMixin} from '../../common/js/mixin'
 
   export default {
-    mixin: [playlistMixin],
+    mixins: [playlistMixin, searchMixin],
     data() {
       return {
         hotKey: [],
-        query: ''
       }
     },
     components: {
@@ -67,9 +66,6 @@
       shortCut() {
         return this.hotKey.concat(this.searchHistory)
       },
-      ...mapGetters([
-        'searchHistory',
-      ])
     },
     methods: {
       _getHotKey() {
@@ -82,15 +78,6 @@
       addQuery(query) {
         this.$refs.searchBox.setQuery(query);
       },
-      onQueryChange(query) {
-        this.query = query;
-      },
-      blurInput() {
-        this.$refs.searchBox.blur()
-      },
-      saveSearch() {
-        this.saveSearchHistory(this.query);
-      },
       deleteOne(item) {
         this.deleteSearchHistory(item)
       },
@@ -100,16 +87,14 @@
       showConfirm() {
         this.$refs.confirm.show()
       },
-      handlePlayList(playlist) {
+      handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '60px' : '';
         this.$refs.shortcutWrapper.style.bottom = bottom;
-        this.$refs.shortcut.refresh();
+//        this.$refs.shortcut.refresh();
         this.$refs.searchResult.style.bottom = bottom;
         this.$refs.suggest.refresh();
        },
       ...mapActions([
-        'saveSearchHistory',
-        'deleteSearchHistory',
         'clearSearchHistory'
       ])
     },
