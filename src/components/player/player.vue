@@ -80,7 +80,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapGetters, mapMutations} from 'vuex'
+  import {mapGetters, mapMutations, mapActions} from 'vuex'
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from '../../common/js/dom'
   import ProgressBar from '../../baseComponents/progress-bar/progress-bar.vue'
@@ -139,6 +139,9 @@
         setPlayMode: 'SET_PLAY_MODE',
         setPlaylist: 'SET_PLAYLIST'
       }),
+      ...mapActions([
+          'savePlayHistory'
+        ]),
       back() {
         this.setFullScreen(false);
       },
@@ -241,6 +244,7 @@
       },
       ready() {
         this.songReady = true;
+        this.savePlayHistory(this.currentSong)
       },
       error() {
         this.songReady = true;
