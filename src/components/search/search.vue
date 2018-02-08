@@ -75,9 +75,6 @@
           }
         })
       },
-      addQuery(query) {
-        this.$refs.searchBox.setQuery(query);
-      },
       deleteOne(item) {
         this.deleteSearchHistory(item)
       },
