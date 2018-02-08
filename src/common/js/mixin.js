@@ -84,6 +84,9 @@ export const searchMixin = {
     saveSearch() {
       this.saveSearchHistory(this.query);
     },
+    addQuery(query) {
+      this.$refs.searchBox.setQuery(query);
+    },
     ...mapActions([
       'saveSearchHistory',
       'deleteSearchHistory',
