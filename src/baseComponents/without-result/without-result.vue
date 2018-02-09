@@ -9,7 +9,12 @@
   export default{
     data() {
       return{
-        text: '抱歉，无搜索结果',
+      }
+    },
+    props: {
+      text: {
+        type: String,
+        default: '抱歉，无搜索结果'
       }
     }
   }
