@@ -1,7 +1,7 @@
 //1.首先定义和项目相关的数据
 
 import {playMode} from '../common/js/config'
-import {loadSearch, loadPlay} from '../common/js/cache'
+import {loadSearch, loadPlay, loadFavorite} from '../common/js/cache'
 
 const state = {
   singer: {},
@@ -13,7 +13,8 @@ const state = {
   currentIndex: -1,
   topList: {},
   searchHistory: loadSearch(),
-  playHistory: loadPlay()
+  playHistory: loadPlay(),
+  favoriteList: loadFavorite()
 };
 
 export default state;
