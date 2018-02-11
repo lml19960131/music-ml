@@ -19,7 +19,7 @@
                 <img v-lazy="item.picUrl" width="60" height="60">
               </div>
               <div class="text">
-                <h2 class="name" v-text="item.name"></h2>
+                <h2 class="name" v-text="item.topTitle"></h2>
                 <p class="description" v-text="item.description"></p>
               </div>
             </li>
@@ -40,6 +40,7 @@
   import {getRecommend} from '../../api/recommend'
   import {ERR_OK} from '../../api/config'
   import {playlistMixin} from '../../common/js/mixin'
+  import {getTopList} from '../../api/rank'
 
   export default{
     mixins: [playlistMixin],
@@ -52,65 +53,26 @@
       return{
         recommends: [],
         recommendList: [
-          {
-            linkUrl: 'http://www.luoo.net/site/go/698?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS85MjI',
-            picUrl: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg',
-              description: '敲里嘛',
-              name: '专辑1'
-            },
-            {
-              linkUrl: 'http://www.luoo.net/site/go/624?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS84NjQ',
-              picUrl: 'http://img-cdn2.luoo.net/site/201708/5993be0007772.jpg',
-              description: '敲里嘛',
-              name: '专辑2'
-            },
-            {
-              linkUrl: 'http://www.luoo.net/site/go/643?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS84ODU',
-              picUrl: 'http://img-cdn2.luoo.net/site/201709/59b25ac16f984.jpg',
-              description: '敲里嘛',
-              name: '专辑3'
-            },
-            {
-              linkUrl: 'http://www.luoo.net/site/go/688?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS85MTM',
-              picUrl: 'http://img-cdn2.luoo.net/site/201711/59fc7102afee3.jpg',
-              description: '敲里嘛',
-              name: '专辑4'
-            },
-            {
-              linkUrl: 'http://www.luoo.net/site/go/698?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS85MjI',
-              picUrl: 'http://img-cdn2.luoo.net/site/201711/5a129472a4c9b.jpg',
-              description: '敲里嘛',
-              name: '专辑1'
-            },
-            {
-              linkUrl: 'http://www.luoo.net/site/go/624?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS84NjQ',
-              picUrl: 'http://img-cdn2.luoo.net/site/201708/5993be0007772.jpg',
-              description: '2222。',
-              name: '专辑2'
-            },
-            {
-              linkUrl: 'http://www.luoo.net/site/go/643?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS84ODU',
-              picUrl: 'http://img-cdn2.luoo.net/site/201709/59b25ac16f984.jpg',
-              description: '敲里嘛',
-              name: '专辑3'
-            },
-            {
-              linkUrl: 'http://www.luoo.net/site/go/688?code=aHR0cDovL3d3dy5sdW9vLm5ldC9lc3NheS85MTM',
-              picUrl: 'http://img-cdn2.luoo.net/site/201711/59fc7102afee3.jpg',
-              description: '敲里嘛',
-              name: '专辑4'
-            }
+
           ]
         }
     },
     created() {
-      this._getRecommend()
+      this._getRecommend();
+      this._getRankList()
     },
     methods:{
       _getRecommend() {
         getRecommend().then((res) => {
           if(res.code === ERR_OK){
             this.recommends = res.data.slider
+          }
+        })
+      },
+      _getRankList(){
+        getTopList().then((res) => {
+          if(res.code === ERR_OK) {
+            this.recommendList = res.data.topList
           }
         })
       },
