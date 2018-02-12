@@ -46,6 +46,30 @@ HTML4/5DOM为<audio>和<video>元素提供了方法、属性和事件。如：lo
 
 ## 3.预览/Preview
 
+### 推荐界面
+![推荐界面](https://github.com/lml19960131/music-ml/blob/master/src/common/image/recommend.png)
+
+### 歌手界面
+![歌手界面](https://github.com/lml19960131/music-ml/blob/master/src/common/image/singer.png)
+
+### 排行界面
+![排行界面](https://github.com/lml19960131/music-ml/blob/master/src/common/image/rank.png)
+
+### 搜索界面
+![搜索界面](https://github.com/lml19960131/music-ml/blob/master/src/common/image/search.png)
+
+### 播放界面
+![播放界面](https://github.com/lml19960131/music-ml/blob/master/src/common/image/player.png)
+
+### 歌手详情界面
+![singer-detail](https://github.com/lml19960131/music-ml/blob/master/src/common/image/singer-detail.png)
+
+### 排行详情界面
+![top-list](https://github.com/lml19960131/music-ml/blob/master/src/common/image/top-list.png)
+
+### 用户界面
+![user-center](https://github.com/lml19960131/music-ml/blob/master/src/common/image/user-center.png)
+
 ***
 
 ## 4.总结/Summary
