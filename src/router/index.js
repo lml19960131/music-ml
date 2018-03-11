@@ -48,6 +48,11 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
+    //用于定义默认展示页面
+    {
+      path: '/',
+      redirect: '/recommend'
+    },
     {
       path: '/recommend',
       component: Recommend
