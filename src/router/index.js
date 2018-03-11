@@ -1,15 +1,50 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Recommend from 'components/recommend/recommend.vue'
-import Singer from 'components/singer/singer.vue'
-import Rank from 'components/rank/rank.vue'
-import Search from 'components/search/search.vue'
-import SingerDetail from  'components/singer-detail/singer-detail.vue'
-import TopList from 'components/top-list/top-list.vue'
-import UserCenter from 'components/user-center/user-center'
+
+//路由改成懒加载(异步加载)
+const Recommend = (resolve) => {
+  import('components/recommend/recommend.vue').then((recommend) => {
+    resolve(recommend)
+  })
+};
+
+const Singer = (resolve) => {
+  import('components/singer/singer.vue').then((singer) => {
+    resolve(singer)
+  })
+};
+
+const Rank = (resolve) => {
+  import('components/rank/rank.vue').then((rank) => {
+    resolve(rank)
+  })
+};
+
+const Search = (resolve) => {
+  import('components/search/search.vue').then((search) => {
+    resolve(search)
+  })
+};
+
+const TopList = (resolve) => {
+  import('components/singer-detail/singer-detail.vue').then((singerDetail) => {
+    resolve(singerDetail)
+  })
+};
+
+const SingerDetail = (resolve) => {
+  import('components/top-list/top-list.vue').then((topList) => {
+    resolve(topList)
+  })
+};
+
+const UserCenter = (resolve) => {
+  import('components/user-center/user-center.vue').then((userCenter) => {
+    resolve(userCenter)
+  })
+};
 
 Vue.use(Router);
-
 
 export default new Router({
   routes: [
