@@ -3,14 +3,14 @@
     <scroll class="recommend-content" :data="recommendList" ref="scroll">
       <div>
         <div class="slider-wrapper" v-if="recommends.length" >
-          <slider>
-            <div v-for="item in recommends">
-              <a :href="item.linkUrl">
-                <img :src="item.picUrl" @load="loadImage" class="needClick">
-              </a>
-            </div>
-          </slider>
-        </div>
+        <slider>
+          <div v-for="item in recommends">
+            <a :href="item.linkUrl">
+              <img :src="item.picUrl" @load="loadImage" class="needsClick">
+            </a>
+          </div>
+        </slider>
+      </div>
         <div class="recommend-list">
           <h1 class="list-title">热门歌单推荐</h1>
           <ul>
@@ -52,10 +52,8 @@
     data(){
       return{
         recommends: [],
-        recommendList: [
-
-          ]
-        }
+        recommendList: []
+      }
     },
     created() {
       this._getRecommend();
@@ -114,30 +112,30 @@
           font-size $font-size-medium
           color $color-theme
         .item
-          display: flex
-          box-sizing: border-box
-          align-items: center
-          padding: 0 20px 20px 20px
+          display flex
+          box-sizing border-box
+          align-items center
+          padding 0 20px 20px 20px
           .icon
-            flex: 0 0 60px
-            width: 60px
-            padding-right: 20px
+            flex 0 0 60px
+            width 60px
+            padding-right 20px
           .text
-            display: flex
-            flex-direction: column
-            justify-content: center
-            flex: 1
-            line-height: 20px
-            overflow: hidden
-            font-size: $font-size-medium
+            display flex
+            flex-direction column
+            justify-content center
+            flex 1
+            line-height 20px
+            overflow hidden
+            font-size $font-size-medium
             .name
-              margin-bottom: 10px
-              color: $color-text
+              margin-bottom 10px
+              color $color-text
             .description
-              color: $color-text-d
+              color $color-text-d
       .loading-container
-        position: absolute
-        width: 100%
-        top: 50%
-        transform: translateY(-50%)
+        position absolute
+        width 100%
+        top 50%
+        transform translateY(-50%)
 </style>
