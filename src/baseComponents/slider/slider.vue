@@ -17,7 +17,7 @@
   export default{
     name: 'slider',
     data(){
-      return{
+      return {
         dots: [],
         currentPageIndex: 0
       }
@@ -40,17 +40,17 @@
       setTimeout(() => {
         this._setSliderWidth();
         this._initDots();
-        this. _initSlider();
-        if(this.autoPlay){
+        this._initSlider();
+        if (this.autoPlay) {
           this._play()
         }
       }, 20);
       window.addEventListener('resize', () => {
-          if(!this.slider){
-              return
-          }
-          this._setSliderWidth(true);
-          this.slider.refresh();
+        if (!this.slider) {
+          return
+        }
+        this._setSliderWidth(true);
+        this.slider.refresh();
       })
     },
     methods: {
@@ -85,24 +85,24 @@
         this.slider.on('scrollEnd', () => {
           let pageIndex = this.slider.getCurrentPage().pageX;
           this.currentPageIndex = pageIndex;
-          if(this.autoPlay){
-              clearTimeout(this.timer);
-              this._play();
+          if (this.autoPlay) {
+            clearTimeout(this.timer);
+            this._play();
           }
         });
       },
       _play(){
-          let pageIndex = this.currentPageIndex + 1;
-          if(pageIndex >= this.$refs.sliderGroup.children.length){
-              pageIndex = 0;
-          }
-          this.timer = setTimeout(() =>{
-              this.slider.goToPage(pageIndex, 0, 400);
-          }, this.interval)
+        let pageIndex = this.currentPageIndex + 1;
+        if (pageIndex >= this.$refs.sliderGroup.children.length) {
+          pageIndex = 0;
+        }
+        this.timer = setTimeout(() => {
+          this.slider.goToPage(pageIndex, 0, 400);
+        }, this.interval)
       }
     },
     destroyed(){
-        clearTimeout(this.timer);
+      clearTimeout(this.timer);
     }
   }
 </script>
@@ -130,21 +130,21 @@
           display block
           width 100%
     .dots
-      position: absolute
-      right: 0
-      left: 0
-      bottom: 12px
-      text-align: center
-      font-size: 0
+      position absolute
+      right 0
+      left 0
+      bottom 12px
+      text-align center
+      font-size 0
       .dot
-        display: inline-block
-        margin: 0 4px
-        width: 8px
-        height: 8px
-        border-radius: 50%
-        background: $color-text-l
+        display inline-block
+        margin 0 4px
+        width 8px
+        height 8px
+        border-radius 50%
+        background $color-text-l
         &.active
-          width: 15px
-          border-radius: 5px
-          background: $color-text-ll
+          width 15px
+          border-radius 5px
+          background $color-text-ll
 </style>
